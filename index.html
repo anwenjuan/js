@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简易计算器</title>
+    <link rel="stylesheet" type="text/css" href="button.css">
+    <script type="text/javascript" src="jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        var yunSuan = 0;//运算符号，0-无运算;1-加法;2-减法;3-乘法;4-除法
+        var change = 0;//属于运算符后需要清空上一数值
+        var num1 = 0;//运算第一个数据
+        var num2 = 0;//运算第二个数据
+        var cunChuValue = 0;//存储的数值
+        $(function () {
+            $(".number").click(function () {//点击数字触发事件
+                var num = $(this).attr('name');
+                var oldValue = $("#jieguo").text();
+                if (change == 1) {
+                    oldValue = "0";
+                    change = 0;
+                }
+                var newValue = "";
+                if (num == -1) {
+                    oldValue = parseFloat(oldValue);
+                    newValue = oldValue * -1;
+                } else if (num == ".") {
+                    if (oldValue.indexOf('.') == -1)
+                        newValue = oldValue + ".";
+                    else
+                        newValue = oldValue;
+                } else {
+                    if (oldValue == 0 && oldValue.indexOf('.') == -1) {
+                        newValue = num;
+                    } else {
+                        newValue = oldValue + num;
+                    }
+                }
+                $("#jieguo").text(newValue);
+            });
+            $("#qingPing").click(function () {//点击清屏触发事件
+                $("#jieguo").text("0");
+                yunSuan = 0;
+                change = 0;
+                num1 = 0;
+                num2 = 0;
+            });
+            $("#tuiGe").click(function () {//点击退格触发事件
+                if (change == 1) {
+                    yunSuan = 0;
+                    change = 0;
+                }
+                var value = $("#jieguo").text();
+                if (value.length == 1) {
+                    $("#jieguo").text("0");
+                } else {
+                    value = value.substr(0, value.length - 1);
+                    $("#jieguo").text(value);
+                }
+            });
+            $(".yunSuan").click(function () {//点击运算符号触发事件
+                change = 1;
+                yuSuan = $(this).attr('name');
+                var value = $("#jieguo").text();
+                var dianIndex = value.indexOf(".");
+                if (dianIndex == value.length) {
+                    value = value.substr(0, value.length - 1);
+                }
+                num1 = parseFloat(value);
+            });
+            $("#dengYu").click(function () {//点击等于符号触发事件
+                var value = $("#jieguo").text();
+                var dianIndex = value.indexOf(".");
+                if (dianIndex == value.length) {
+                    value = value.substr(0, value.length - 1);
+                }
+                num2 = parseFloat(value);
+                var sum = 0;
+                if (yuSuan == 1) {
+                    sum = num1 + num2;
+                } else if (yuSuan == 2) {
+                    sum = num1 - num2;
+                } else if (yuSuan == 3) {
+                    sum = num1 * num2;
+                } else if (yuSuan == 4) {
+                    sum = num1 / num2;
+                } else if (yuSuan == 0 || num1 == 0 || num2 == 0) {
+                    sum = num1 + num2;
+                }
+                var re = /^[0-9]+.?[0-9]*$/;
+                if (re.test(sum)) {
+                    sum = sum.toFixed(2);
+                }
+                $("#jieguo").text(sum);
+                change = 1;
+                yuSuan = 0;
+                num1 = 0;
+                num2 = 0;
+            });
+            $("#cunChu").click(function () {//点击存储触发事件
+                change = 1;
+                var value = $("#jieguo").text();
+                var dianIndex = value.indexOf(".");
+                if (dianIndex == value.length) {
+                    value = value.substr(0, value.length - 1);
+                }
+                cunChuValue = parseFloat(value);
+            });
+            $("#quCun").click(function () {//点击取存触发事件
+                change = 1;
+                $("#jieguo").text(cunChuValue);
+            });
+            $("#qingCun").click(function () {//点击清存触发事件
+                change = 1;
+                cunChuValue = 0;
+            });
+            $("#leiCun").click(function () {//点击累存触发事件
+                change = 1;
+                var value = $("#jieguo").text();
+                var dianIndex = value.indexOf(".");
+                if (dianIndex == value.length) {
+                    value = value.substr(0, value.length - 1);
+                }
+                cunChuValue += parseFloat(value);
+            });
+            $("#jiCun").click(function () {//点击积存触发事件
+                change = 1;
+                var value = $("#jieguo").text();
+                var dianIndex = value.indexOf(".");
+                if (dianIndex == value.length) {
+                    value = value.substr(0, value.length - 1);
+                }
+                if (cunChuValue == 0) {
+                    cunChuValue = parseFloat(value);
+                } else {
+                    cunChuValue = cunChuValue * parseFloat(value);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<table>
+    <tr>
+        <td colspan="4">
+            <div id="jieguo"
+                 style="width: 300px;height: 30px;font-size: 30px;text-align: right;font-weight:bold;color: red;">0
+            </div>
+        </td>
+    </tr>
+    <tr style="height: 40px;">
+        <td>
+            <button id="cunChu">&nbsp;存&nbsp;储&nbsp;</button>
+        </td>
+        <td>
+            <button id="quCun">&nbsp;取&nbsp;存&nbsp;</button>
+        </td>
+        <td>
+            <button id="tuiGe">&nbsp;退&nbsp;格&nbsp;</button>
+        </td>
+        <td>
+            <button id="qingPing">&nbsp;清&nbsp;屏&nbsp;</button>
+        </td>
+    </tr>
+    <tr style="height: 40px;">
+        <td>
+            <button id="leiCun">&nbsp;累&nbsp;存&nbsp;</button>
+        </td>
+        <td>
+            <button id="jiCun">&nbsp;积&nbsp;存&nbsp;</button>
+        </td>
+        <td>
+            <button id="qingCun">&nbsp;清&nbsp;存&nbsp;</button>
+        </td>
+        <td>
+            <button id="Chuyi" class="yunSuan" name="4">&nbsp;&nbsp;÷&nbsp;&nbsp;</button>
+        </td>
+    </tr>
+    <tr style="height: 40px;">
+        <td>
+            <button id="seven" class="number" name="7">&nbsp;&nbsp;7&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="eight" class="number" name="8">&nbsp;&nbsp;8&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="nine" class="number" name="9">&nbsp;&nbsp;9&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="chengYi" class="yunSuan" name="3">&nbsp;&nbsp;×&nbsp;&nbsp;</button>
+        </td>
+    </tr>
+    <tr style="height: 40px;">
+        <td>
+            <button id="four" class="number" name="4">&nbsp;&nbsp;4&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="five" class="number" name="5">&nbsp;&nbsp;5&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="six" class="number" name="6">&nbsp;&nbsp;6&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="jianQu" class="yunSuan" name="2">&nbsp;&nbsp;-&nbsp;&nbsp;</button>
+        </td>
+    </tr>
+    <tr style="height: 40px;">
+        <td>
+            <button id="one" class="number" name="1">&nbsp;&nbsp;1&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="two" class="number" name="2">&nbsp;&nbsp;2&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="three" class="number" name="3">&nbsp;&nbsp;3&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="jiaShang" class="yunSuan" name="1">&nbsp;&nbsp;+&nbsp;&nbsp;</button>
+        </td>
+    </tr>
+    <tr style="height: 40px;">
+        <td>
+            <button id="zero" class="number" name="0">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="dian" class="number" name=".">&nbsp;&nbsp;.&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="zhengFu" class="number" name="-1">&nbsp;&nbsp;+/-&nbsp;&nbsp;</button>
+        </td>
+        <td>
+            <button id="dengYu">&nbsp;&nbsp;=&nbsp;&nbsp;</button>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
