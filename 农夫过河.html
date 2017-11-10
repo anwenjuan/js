@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" />
+	<meta name="description" content=" 一农夫带着一头狼，一只羊和一担草过河，小船只能一次装载农夫和一样货物，狼会吃羊，羊会吃草，只有农夫在时才安全。现欲让所有物品包括农夫都安全过道河对岸，使用程序实现求解。" />
 	<title>农夫过河</title>
 	<script type="text/javascript">
 		// 判断两个状态是否相等
@@ -11,7 +13,6 @@
 			if (statusA[3] != statusB[3]) return false;
 			return true;
 		}
-
 
 		// 判断是否都到了河的右岸
 		function statusIsEnd(status) {
@@ -74,6 +75,7 @@
 			return false;
 		}
 
+		// 打印某个状态
 		function outputStatus(status) {
 			var statusArray = ["人", "狼", "羊", "草"];
 			var left = [];
@@ -112,17 +114,13 @@
 				for (var j = 0; j < nextStatusArray.length; j++) {
 					var nextStatus = nextStatusArray[j];
 
-					// 记录当前状态的上一个状态，用于输出
-					nextStatus.last = status;
-					if (!status.hasOwnProperty("nextArray")) {
-						status.nextArray = [];
-					}
-					status.nextArray[status.nextArray.length] = nextStatus;
-
 					// 状态出项过，不必记录
 					if (statusFoundInArray(statusArray.slice(0, i + 1), nextStatus)) {
 						continue;
 					}
+
+					// 记录当前状态的上一个状态，用于输出
+					nextStatus.last = status;
 
 					// 将下一状态记录，等待读取
 					statusArray[statusArray.length] = nextStatus;
@@ -134,7 +132,7 @@
 				outputStatus(status);
 			} while (status = status.last);
 
-			console.log(statusBeg)
+			console.log(statusArray)
 		}
 	</script>
 </head>
