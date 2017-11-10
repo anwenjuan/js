@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>农夫过河</title>
+	<script type="text/javascript">
+		// 判断两个状态是否相等
+		function statusEqual(statusA, statusB) {
+			if (statusA[0] != statusB[0]) return false;
+			if (statusA[1] != statusB[1]) return false;
+			if (statusA[2] != statusB[2]) return false;
+			if (statusA[3] != statusB[3]) return false;
+			return true;
+		}
+
+
+		// 判断是否都到了河的右岸
+		function statusIsEnd(status) {
+			return statusEqual(status, [true, true, true, true]);
+		}
+
+		// 有东西被吃么？
+		function doEatHappen(status) {
+			// 狼 羊 同边，且农夫不在
+			if (status[1] == status[2] && status[1] != status[0]) {
+				return true;
+			}
+
+			// 羊 草 同边，且农夫不在
+			if (status[2] == status[3] && status[2] != status[0]) {
+				return true;
+			}
+
+			return false;
+		}
+
+		// 根据当前状态获取下一状态
+		function getNextStatus(status) {
+			var newStatusArray = [];
+			var actions = [
+				"农夫单独过河", // chang status[0]
+				"农夫和狼过河", // chang status[0, 1]
+				"农夫和羊过河", // chang status[0, 2]
+				"农夫和草过河", // chang status[0, 3]
+			];
+			for (var i = 0; i < actions.length; i++) {
+				var newStatus = [status[0], status[1], status[2], status[3]];
+				// 农夫单独判断
+				if (0 == i) {
+					newStatus[0] = !status[0];
+				} else if (status[0] == status[i]) {
+					// 在同一边时才能执行动作
+					newStatus[0] = !status[0];
+					newStatus[i] = !status[i];
+				} else {
+					continue;
+				}
+
+				// 有物体被吃了
+				if (doEatHappen(newStatus)) {
+					continue;
+				}
+
+				newStatusArray[newStatusArray.length] = newStatus;
+			}
+
+			return newStatusArray;
+		}
+
+		// 判断数组中是否包含当前状态
+		function statusFoundInArray(statusArray, status) {
+			for (var i = 0; i < statusArray.length; i++) {
+				if (statusEqual(statusArray[i], status)) return true;
+			}
+			return false;
+		}
+
+		function outputStatus(status) {
+			var statusArray = ["人", "狼", "羊", "草"];
+			var left = [];
+			var right = [];
+
+			for (var i = 0; i < statusArray.length; i++) {
+				if (status[i]) {
+					right[right.length] = statusArray[i];
+				} else {
+					left[left.length] = statusArray[i];
+				}
+			}
+			console.log(left.join(), "-------------", right.join());
+		}
+
+		window.onload = function() {
+			// [农夫，狼， 羊， 草] 的初始状态，false表示在河的左岸
+			var statusBeg = [false, false, false, false];
+
+			var status;
+			var statusEnd;  		// 记录终止状态，用于输出			
+			var statusArray = []; 	// 记录初始状态
+
+			statusArray[0] = statusBeg;
+
+			for (var i = 0; i < statusArray.length; i++) {
+				status = statusArray[i];
+
+				// 是否是结束状态？
+				if (statusIsEnd(status)) {
+					statusEnd = status;
+				}
+
+				// 获取下一状态
+				var nextStatusArray = getNextStatus(status);
+				for (var j = 0; j < nextStatusArray.length; j++) {
+					var nextStatus = nextStatusArray[j];
+
+					// 记录当前状态的上一个状态，用于输出
+					nextStatus.last = status;
+					if (!status.hasOwnProperty("nextArray")) {
+						status.nextArray = [];
+					}
+					status.nextArray[status.nextArray.length] = nextStatus;
+
+					// 状态出项过，不必记录
+					if (statusFoundInArray(statusArray.slice(0, i + 1), nextStatus)) {
+						continue;
+					}
+
+					// 将下一状态记录，等待读取
+					statusArray[statusArray.length] = nextStatus;
+				}
+			}
+
+			status = statusEnd;
+			do {
+				outputStatus(status);
+			} while (status = status.last);
+
+			console.log(statusBeg)
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>
