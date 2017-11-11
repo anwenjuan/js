@@ -31,8 +31,15 @@ function Numbers() {
 function animate(ele, target) {
     clearInterval(ele.timer);
     ele.timer = setInterval(function () {
+        var liArr = ele.children;
+        for (var i = 0; i < liArr.length; i++) {
+            liArr[i].innerHTML = parseInt(Math.random() * 10);
+        }
+
+
         var step = Math.random();
         ele.style.top = ele.offsetTop + step + "px";
+        console.log(111)
         if (Math.abs(target - ele.offsetTop) <= Math.abs(step)) {
             ele.style.top = target + "px";
             clearInterval(ele.timer);
@@ -45,4 +52,21 @@ function getRandomIntInclusive(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+// function liNumber(li) {
+//     clearInterval(li.timer);
+//
+//
+//     li.timer = setInterval(function () {
+//         li.innerHTML = parseInt(Math.random() * 10);
+//
+//         if(li.parentNode.style.top >= li.parentNode.parentNode.clientHeight) {
+//             clearInterval(li.timer);
+//         }
+//         // console.log(li.parentNode);
+//         // clearInterval(timer);
+//         // console.log(li.parentNode.style.top);
+//         console.log(111)
+//     },1500)
+// }
 
