@@ -6,29 +6,23 @@ function Numbers() {
         for (var i = 0; i < parseInt(Math.random() * 50); i++) {
             var ul = document.createElement('ul');
             var wordSize = getRandomIntInclusive(6, 14) * 2;
-            var liLineHeight = (wordSize + 10);
-            var width = (wordSize + 10);
-            var ulLineHeight = (wordSize + 10) * 8;
+            var liHeight = wordSize;
             for (var j = 0; j < 8; j++) {
                 var li = document.createElement('li');
                 li.style.fontSize = wordSize + 'px';
-                li.style.lineHeight = liLineHeight + 'px';
                 li.innerHTML = parseInt(Math.random() * 10);
-                li.style.top = j * 20 + 'px';
+                li.style.lineHeight = liHeight + 'px';
+                li.style.paddingTop = '2px';
                 ul.appendChild(li);
             }
-            var top = Math.random() * (box.clientHeight - ulLineHeight);
-            ul.offsetHeight.log
-            var left = Math.random() * (box.clientWidth - width);
+            ul.style.width = wordSize + 'px';
+            var top = Math.random() * (box.clientHeight);
 
-            if (left > box.clientWidth - width || top > box.clientHeight - ulLineHeight) {
-                return;
-            }
-            ul.style.left = parseInt(left) + 'px';
-            ul.style.top = parseInt(top) + 'px';
+            var left = Math.random() * (box.clientWidth);
+            ul.style.left = left + 'px';
+            ul.style.top = top + 'px';
             box.appendChild(ul);
-
-            animate(ul, (box.clientHeight - top));
+            animate(ul, box.clientHeight);
         }
     }
 }
@@ -37,7 +31,7 @@ function Numbers() {
 function animate(ele, target) {
     clearInterval(ele.timer);
     ele.timer = setInterval(function () {
-        var step = target > ele.offsetTop ? Math.random() : -Math.random();
+        var step = Math.random();
         ele.style.top = ele.offsetTop + step + "px";
         if (Math.abs(target - ele.offsetTop) <= Math.abs(step)) {
             ele.style.top = target + "px";
