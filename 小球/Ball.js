@@ -2,114 +2,59 @@
  * Created by anan on 2017/11/13.
  */
 (function () {
-    function Ball(w,h) {
+    function Ball(w, h) {
         this.width = w || 40;
         this.height = h || 40;
-        this.ballArr = [
-            {left:0,top:0,bagkground:'red'},
-            {left:400,top:0,bagkground:'green'},
-            {left:400,top:400,bagkground:'blue'},
-            {left:0,top:400,bagkground:'yellow'}
-        ];
+        this.divArr = [];
     }
-    var arr = [];
-    Ball.prototype.init = function (box) {
 
-        removeBall(box);
-        for (var i = 0; i < this.ballArr.length; i++) {
+    Ball.prototype.init = function (box) {
+        var ballArr = [
+            {left: 0, top: 0, bagkground: 'red'},
+            {left: 400, top: 0, bagkground: 'green'},
+            {left: 400, top: 400, bagkground: 'blue'},
+            {left: 0, top: 400, bagkground: 'yellow'}
+        ];
+        for (var i = 0; i < ballArr.length; i++) {
             var div = document.createElement('div');
-            div.style.width = this.width + 'px' ;
+            div.style.width = this.width + 'px';
             div.style.height = this.height + 'px';
             div.style.borderRadius = '50%';
             div.style.position = 'absolute';
-            this.left = this.ballArr[i].left - this.width/2;
-            this.top = this.ballArr[i].top - this.height/2;
-            div.style.top=this.top + 'px';
-            div.style.left=this.left + 'px';
-            div.style.background=this.ballArr[i].bagkground;
+            var top = ballArr[i].top - this.height / 2;
+            var left = ballArr[i].left - this.width / 2;
+            div.style.top = top + 'px';
+            div.style.left = left + 'px';
+            div.style.background = ballArr[i].bagkground;
             box.appendChild(div);
-            arr.push(div);
+            this.divArr.push(div);
         }
-    }
+    };
 
-
-    function removeBall(box) {
+    Ball.prototype.ballRoll = function () {
+        var arr = this.divArr;
         for (var i = 0; i < arr.length; i++) {
-            box.removeChild(arr[i]);
+            var target = {
+                left: arr[(i + 1) % arr.length].offsetLeft,
+                top: arr[(i + 1) % arr.length].offsetTop
+            };
+            this.animate(arr[i], target);
         }
-        arr = [];
-    }
-   
-    
-    // Ball.prototype.ballMove = function (box) {
-    //
-    //     for (var i = 0; i < this.ballArr.length - 1; i++) {
-    //         ballPosition(this.ballArr[i],this.ballArr[i+1])
-    //     }
-    //     console.log(this.ballArr);
-    //
-    //
-    //
-    //     this.init(box);
-    // }
+    };
 
-    Ball.prototype.ballRoll = function (box) {
-
-        for (var i = 0; i < this.ballArr.length - 1; i++) {
-            this.animate(this.ballArr[i],this.ballArr[i+1],box);
-        }
-        console.log(this.ballArr);
-
-
-
-        // this.init(box);
-    }
-    
-    function ballPosition(a,b) {
-        var l = a.left;
-        var t = a.top;
-        a.left = b.left;
-        a.top = b.top;
-        b.left = l;
-        b.top = t;
-    }
-
-    // Ball.prototype.ballChangeColor = function (box) {
-        //逆时针
-        // for (var i = 0; i < this.ballArr.length -1; i++) {
-        //     changeColor(this.ballArr[i],this.ballArr[i+1]);
-        // }
-
-        //顺时针
-        // for (var i = this.ballArr.length -1; i > 0; i--) {
-        //     changeColor(this.ballArr[i],this.ballArr[i-1]);
-        // }
-        // this.init(box);
-    // }
-    // function changeColor(a,b) {
-    //     var c = a.bagkground;
-    //     a.bagkground = b.bagkground;
-    //     b.bagkground = c;
-    // }
-
-    Ball.prototype.animate = function(ele,target,box) {
+    Ball.prototype.animate = function (ele, target) {
         clearInterval(ele.timer);
 
+        var stepx = (target.left - ele.offsetLeft) / 100;
+        var stepy = (target.top - ele.offsetTop) / 100;
         ele.timer = setInterval(function () {
-            // var stepx = target.left - ele.left > 0 ? 10 : -10;
-            // var stepy = target.top - ele.top > 0 ? 10 : -10;
-            var stepx = (target.left - ele.left)/10;
-            var stepy = (target.top - ele.top)/10;
-            ele.left = ele.left + stepx ;
-            ele.top = ele.top + stepy ;
-            if(ele.left == target.left && ele.top== target.top) {
-                clearInterval(timer);
+            ele.style.left = ele.offsetLeft + stepx + 'px';
+            ele.style.top = ele.offsetTop + stepy + 'px';
+            if (ele.offsetLeft === target.left && ele.offsetTop === target.top) {
+                clearInterval(ele.timer);
             }
-        },200)
-        
-        this.init(box);
-    }
-
+        }, 20);
+    };
 
     window.Ball = Ball;
 })();
