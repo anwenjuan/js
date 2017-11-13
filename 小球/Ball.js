@@ -43,8 +43,8 @@
     };
 
     Ball.prototype.animate = function (ele, target) {
-        clearInterval(ele.timer);
-
+        // clearInterval(ele.timer);
+        if (ele.timer) return;
         var stepx = (target.left - ele.offsetLeft) / 100;
         var stepy = (target.top - ele.offsetTop) / 100;
         ele.timer = setInterval(function () {
@@ -52,6 +52,7 @@
             ele.style.top = ele.offsetTop + stepy + 'px';
             if (ele.offsetLeft === target.left && ele.offsetTop === target.top) {
                 clearInterval(ele.timer);
+                delete ele.timer;
             }
         }, 20);
     };
