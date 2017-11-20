@@ -5,10 +5,25 @@
     <title>Title</title>
     <link rel="stylesheet" href="css/magnify.css">
     <script >
+    function parseSearchURL() {
+        var res = {};
+        var str = window.location.search;
+        str = str.slice(1);  // skip '?'
+
+        var params = str.split('&');
+        for (var i = 0;i < params.length;i++) {
+            var arr = params[i].split('=');
+            res[arr[0]] = decodeURIComponent(arr[1]);
+        }
+
+        return res;
+    }
     window.onload = function () {
+        var search = parseSearchURL();
+        console.log(search);
         var imgArr = document.getElementsByTagName('img');
         for (var i = 0; i < imgArr.length; i++) {
-            imgArr[i].src = imgAddress;
+            imgArr[i].src = search.src;
         }
     }
     </script>
