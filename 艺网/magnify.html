@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/magnify.css">
+    <script >
+    window.onload = function () {
+        var imgArr = document.getElementsByTagName('img');
+        for (var i = 0; i < imgArr.length; i++) {
+            imgArr[i].src = imgAddress;
+        }
+    }
+    </script>
+</head>
+<body>
+
+<div class="pic_magnigy">
+
+    <div class="small_pic_box">
+        <img src="image/twin_flower.jpg" alt="">
+        <div class="magnify_box"></div>
+    </div>
+
+    <div class="big_pic_box">
+        <img src="image/twin_flower.jpg" alt="">
+    </div>
+
+</div>
+
+
+<script src='js/magnify.js'></script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据流</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src='Numbers.js'></script>
+    <script src='Play.js'></script>
+    <script>
+        window.onload = function () {
+            var box = document.getElementById('box');
+            var play = new Play();
+            play.start(box);
+
+        }
+    </script>
+</head>
+<body>
+<div class="box" id="box"></div>
+</body>
+</html>

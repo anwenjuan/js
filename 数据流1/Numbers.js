@@ -33,6 +33,7 @@ function animate(ul, target) {
     clearInterval(ul.childTimer);
     var step = getRandom(0.5, 1);
     ul.timer = setInterval(function () {
+
         ul.style.top = ul.offsetTop + step + "px";
         if (Math.abs(target - ul.offsetTop) <= Math.abs(step)) {
             ul.style.top = target + "px";
