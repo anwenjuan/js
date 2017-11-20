@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box {
+            width: 400px;
+            height: 400px;
+            margin: 100px auto;
+            border-radius: 50%;
+            border: 1px solid #000;
+            position: relative;
+        }
+    </style>
+
+</head>
+<body>
+<div class="box" id="box"></div>
+
+<script src='Ball.js'></script>
+<script>
+    var box = document.getElementById('box');
+    var ball = new Ball();
+    ball.init(box);
+    ball.ballRoll(box);
+
+</script>
+</body>
+</html>
